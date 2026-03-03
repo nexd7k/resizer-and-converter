@@ -10,7 +10,7 @@ O projeto pode ser executado de duas formas:
 
 - Localmente, com uma interface gráfica simples desenvolvida com customtkinter.
 
-- Pelo navegador, utilizando streamlit.
+- Pelo navegador, utilizando streamlit. Link para uso: https://resizer-and-converter.streamlit.app/
 
 Tecnologias utilizadas:
 
