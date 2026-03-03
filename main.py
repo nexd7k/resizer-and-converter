@@ -3,6 +3,7 @@ from PIL import Image, ImageOps
 import os
 from pillow_heif import register_heif_opener
 import io
+import zipfile
 
 # Inicializa suporte para HEIF (iPhone)
 register_heif_opener()
@@ -78,13 +79,21 @@ if uploaded_files:
 
         st.success("✅ Processamento concluído!")
 
-        # Opção de Download
         if processed_images:
             st.markdown("### Baixe seus arquivos:")
-            for img_data in processed_images:
-                st.download_button(
-                    label=f"Download {img_data['name']}",
-                    data=img_data['content'],
-                    file_name=img_data['name'],
-                    mime="image/jpeg"
-                )
+            
+            # 1. Criar um buffer na memória para o arquivo ZIP
+            zip_buffer = io.BytesIO()
+            
+            # 2. Criar o arquivo ZIP e adicionar as imagens
+            with zipfile.ZipFile(zip_buffer, "a", zipfile.ZIP_DEFLATED, False) as zip_file:
+                for img_data in processed_images:
+                    zip_file.writestr(img_data['name'], img_data['content'])
+            
+            # 3. Botão para baixar o arquivo completo
+            st.download_button(
+                label="Baixar Imagens Processadas",
+                data=zip_buffer.getvalue(),
+                file_name="imagens_processadas.zip",
+                mime="application/zip"
+            )
