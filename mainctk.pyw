@@ -94,5 +94,4 @@ process_button.grid(row=4, column=3, padx=30, pady=20)
 process_button = ctk.CTkButton(app, text="Converter Imagens", command=lambda: threading.Thread(target=convert).start())
 process_button.grid(row=5, column=3, padx=30, pady=20)
 
-if __name__ == '__main__':
-    app.mainloop()
+app.mainloop()
