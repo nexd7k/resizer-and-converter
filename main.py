@@ -27,21 +27,32 @@ st.set_page_config(page_title="Image Resizer & Converter", page_icon="📸")
 st.title("📸 Image Resizer & Converter")
 st.markdown("Converta suas imagens para **JPG** e redimensione para **1200x1600** automaticamente.")
 
-# Upload de arquivos (Streamlit lida com arquivos em memória, o que é mais seguro)
+# Chave dinâmica para resetar o file_uploader
+if "uploader_key" not in st.session_state:
+    st.session_state.uploader_key = 0
+
+# Upload de arquivos
 uploaded_files = st.file_uploader(
     "Escolha as imagens", 
     type=['webp', 'heic', 'png', 'jpg', 'jpeg'], 
-    accept_multiple_files=True
+    accept_multiple_files=True,
+    key=f"uploader_{st.session_state.uploader_key}"
 )
 
 if uploaded_files:
     st.info(f"{len(uploaded_files)} arquivos carregados.")
     
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     
     # Botões de ação
     convert_btn = col1.button("Apenas Converter para JPG")
     resize_btn = col2.button("Redimensionar (1200x1600)")
+    clear_btn = col3.button("Limpar Imagens Carregadas")
+
+    # Limpar imagens carregadas
+    if clear_btn:
+        st.session_state.uploader_key += 1
+        st.rerun()
 
     if convert_btn or resize_btn:
         progress_bar = st.progress(0)
